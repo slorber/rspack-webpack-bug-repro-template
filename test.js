@@ -11,9 +11,72 @@ if (!["rspack", "webpack"].includes(bundlerName)) {
 }
 const bundler = bundlerName === "rspack" ? rspack : webpack;
 
+const babelLoader = {
+  test: /\.(?:js|ts)$/,
+  exclude: /node_modules/,
+  use: {
+    loader: "babel-loader",
+    options: {
+      targets: "defaults",
+      presets: [["@babel/preset-env"]],
+    },
+  },
+};
+
+const rspackSwcLoader = {
+  test: /\.(?:js|ts)$/,
+  exclude: [/node_modules/],
+  loader: "builtin:swc-loader",
+  options: {
+    env: {
+      targets: ["node 24.2.0"],
+      //       targets: [">0.5%", "not dead", "not op_mini all"],
+    },
+    jsc: {
+      parser: {
+        syntax: "typescript",
+        tsx: true,
+      },
+      transform: {
+        react: {
+          runtime: "automatic",
+        },
+      },
+    },
+  },
+  type: "javascript/auto",
+};
+
 const compiler = bundler({
+  mode: "production",
+  name: "server",
+  cache: true,
+  experiments:
+    bundlerName === "rspack"
+      ? {
+          cache: {
+            type: "persistent",
+            version:
+              "server-production-en-3.9.0-15972d87ecb5ffade26e85dddeda10b0",
+            buildDependencies: [],
+          },
+          lazyBarrel: true,
+          parallelCodeSplitting: false,
+        }
+      : {},
+  optimization: {
+    mergeDuplicateChunks: false,
+    minimize: false,
+    splitChunks: false,
+    concatenateModules: false,
+  },
+  target: "node24.2",
+
   entry: {
-    entry: "./src/entry.js",
+    entry: "./src/entry.ts",
+  },
+  module: {
+    rules: [bundlerName === "rspack" ? rspackSwcLoader : babelLoader],
   },
   plugins: [
     new bundler.DefinePlugin({
