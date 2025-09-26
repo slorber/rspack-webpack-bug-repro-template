@@ -19,5 +19,13 @@
   },
   "devDependencies": {
     "prettier": "^3.6.2"
+  },
+  "peerDependencies": {
+    "@mermaid-js/layout-elk": "^0.1.9"
+  },
+  "peerDependenciesMeta": {
+    "@mermaid-js/layout-elk": {
+      "optional": true
+    }
   }
 }
