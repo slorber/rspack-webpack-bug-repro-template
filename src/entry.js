@@ -1,5 +1,5 @@
+console.log({ __DEP_IS_ENABLED__ });
 
-
-export const hello = `world`;
-
-console.log('Hello from entry.js',hello);
+if (__DEP_IS_ENABLED__) {
+  import("some-non-existing-dep").then(console.log);
+}

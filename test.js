@@ -15,6 +15,11 @@ const compiler = bundler({
   entry: {
     entry: "./src/entry.js",
   },
+  plugins: [
+    new bundler.DefinePlugin({
+      __DEP_IS_ENABLED__: JSON.stringify(false),
+    }),
+  ],
   output: {
     filename: `[name].${bundlerName}.js`,
   },
