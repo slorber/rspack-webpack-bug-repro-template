@@ -1,0 +1,17 @@
+{
+  "name": "rspack-cache-repro",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:webpack && npm run test:rspack",
+    "test:webpack": "BUNDLER=webpack node test.js",
+    "test:rspack": "BUNDLER=rspack node test.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@rspack/core": "^1.5.7",
+    "webpack": "^5.101.3"
+  }
+}
